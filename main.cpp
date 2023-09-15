@@ -1,5 +1,5 @@
-#include "filestruct.h"
-#include "sorts.h"
+#include "../FileOpenLib/filestruct.h"
+#include "headers/sorts.h"
 
 int main(int /*argc*/, char** /*argv*/)
 {
@@ -7,18 +7,20 @@ int main(int /*argc*/, char** /*argv*/)
                                      .number_of_lines = 0,
                                      .lines_array = NULL};
 
+    FILE* fp = fopen("output.txt", "wb");
+    fclose(fp);
+    fp = NULL;
+
     GetFileInput("onegin.txt", &onegin_struct, PARTED);
 
     StraightSort(&onegin_struct);
-    for (size_t i = 0; i < onegin_struct.number_of_lines; ++i)
-    {
-        if (onegin_struct.lines_array[i].line[0] == '\0')
-            continue;
-        printf("%s\n", onegin_struct.lines_array[i].line);
-    }
+    Output("output.txt", &onegin_struct);
 
     RevSort(&onegin_struct);
 
+    BufferOutput("output.txt", onegin_struct.buffer, onegin_struct.buffer_size);
+
     FreeFileInput(&onegin_struct);
+
     return 0;
 }

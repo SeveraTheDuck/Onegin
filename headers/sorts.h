@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <assert.h>
 #include <strings.h>
+#include <limits.h>
 
 enum SortDirection
 {
@@ -25,6 +26,8 @@ void StraightSort(struct file_input* buffer_info);
 
 void RevSort(struct file_input* buffer_info);
 
-void RevSortOutput(const char* file_name, struct file_input* buffer_info);
+void Output(const char* file_name, struct file_input* buffer_info);
+
+void BufferOutput(const char* file_name, char* buffer, size_t buffer_size);
 
 #endif

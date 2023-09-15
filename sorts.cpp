@@ -1,4 +1,4 @@
-#include "sorts.h"
+#include "headers/sorts.h"
 #include "../FileOpenLib/filestruct.h"
 
 void MySwap(line_struct* str1,
@@ -42,9 +42,9 @@ int MyStrcmp(const line_struct* struct1,
     assert(struct2);
 
     if (struct1->line[0] == '\0')
-        return -1000;
+        return INT_MIN;
     if (struct2->line[0] == '\0')
-        return 1000;
+        return INT_MAX;
 
     int i = 0;
     int j = 0;
@@ -105,14 +105,14 @@ void RevSort(file_input* buffer_info)
     assert(buffer_info);
 
     BubbleSort(buffer_info);
-    RevSortOutput("revsort.txt", buffer_info);
+    Output("output.txt", buffer_info);
 }
 
-void RevSortOutput(const char* file_name, file_input* buffer_info)
+void Output(const char* file_name, file_input* buffer_info)
 {
     assert(buffer_info);
 
-    FILE* fp = fopen(file_name, "wb");
+    FILE* fp = fopen(file_name, "a");
     assert(fp);
 
     for (size_t i = 0; i < buffer_info->number_of_lines; ++i)
@@ -121,5 +121,23 @@ void RevSortOutput(const char* file_name, file_input* buffer_info)
             continue;
         fprintf(fp, "%s\n", buffer_info->lines_array[i].line);
     }
+    fprintf(fp, "\n--------------------------------------------------\n\n\n");
+
+    fclose(fp);
+}
+
+void BufferOutput(const char* file_name, char* buffer, size_t buffer_size)
+{
+    FILE* fp = fopen(file_name, "a");
+    assert(fp);
+
+    for (size_t i = 0; i < buffer_size; ++i)
+    {
+        if (buffer[i] == '\0')
+            fputc('\n', fp);
+        else
+            fputc(buffer[i], fp);
+    }
+
     fclose(fp);
 }
