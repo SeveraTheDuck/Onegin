@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <strings.h>
 #include <limits.h>
+#include "../../FileOpenLib/filestruct.h"
 
 enum SortDirection
 {
@@ -17,6 +18,9 @@ void MySwap(const struct line_struct* str1,
             const struct line_struct* str2);
 
 int StraightCompare(const void* ptr1, const void* ptr2);
+
+void BubbleSort(const file_input* buffer_info,
+                int (*comparator) (const void* ptr1, const void* ptr2));
 
 int MyStrcmp(const struct line_struct* struct1,
              const struct line_struct* struct2,

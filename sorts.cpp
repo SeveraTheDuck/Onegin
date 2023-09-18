@@ -13,7 +13,8 @@ void MySwap(line_struct* str1,
     return;
 }
 
-void BubbleSort(const file_input* buffer_info)
+void BubbleSort(const file_input* buffer_info,
+                int (*comparator) (const void* ptr1, const void* ptr2))
 {
     assert(buffer_info);
 
@@ -22,9 +23,8 @@ void BubbleSort(const file_input* buffer_info)
     {
         for (size_t j = 0; j < buffer_info->number_of_lines - i - 1; ++j)
         {
-            cmp_status = MyStrcmp((const line_struct*)&buffer_info->lines_array[j],
-                                  (const line_struct*)&buffer_info->lines_array[j + 1],
-                                  (int)REVERSE);
+            cmp_status = comparator((const void*)&buffer_info->lines_array[j],
+                                    (const void*)&buffer_info->lines_array[j + 1]);
             if (cmp_status > 0)
             {
                 MySwap((line_struct*)&(buffer_info->lines_array[j]),
@@ -115,7 +115,7 @@ void RevSort(file_input* buffer_info)
 {
     assert(buffer_info);
 
-    BubbleSort(buffer_info);
+    BubbleSort(buffer_info, RevCompare);
 }
 
 void Output(const char* file_name, file_input* buffer_info)
