@@ -19,8 +19,8 @@ void MySwap(const struct line_struct* str1,
 int StraightCompare(const void* ptr1, const void* ptr2);
 
 int MyStrcmp(const struct line_struct* struct1,
-                   const struct line_struct* struct2,
-                   int step);
+             const struct line_struct* struct2,
+             int step);
 
 void StraightSort(struct file_input* buffer_info);
 
@@ -29,5 +29,7 @@ void RevSort(struct file_input* buffer_info);
 void Output(const char* file_name, struct file_input* buffer_info);
 
 void BufferOutput(const char* file_name, char* buffer, size_t buffer_size);
+
+int RevCompare(const void* ptr1, const void* ptr2);
 
 #endif

@@ -92,6 +92,17 @@ int StraightCompare(const void* ptr1, const void* ptr2)
     return MyStrcmp(struct1, struct2, (int)STRAIGHT);
 }
 
+int RevCompare(const void* ptr1, const void* ptr2)
+{
+    assert(ptr1);
+    assert(ptr2);
+
+    const line_struct* struct1 = (const line_struct*)ptr1;
+    const line_struct* struct2 = (const line_struct*)ptr2;
+
+    return MyStrcmp(struct1, struct2, (int)REVERSE);
+}
+
 void StraightSort(file_input* buffer_info)
 {
     assert(buffer_info);
@@ -105,7 +116,6 @@ void RevSort(file_input* buffer_info)
     assert(buffer_info);
 
     BubbleSort(buffer_info);
-    Output("output.txt", buffer_info);
 }
 
 void Output(const char* file_name, file_input* buffer_info)

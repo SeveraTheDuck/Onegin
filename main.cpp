@@ -17,6 +17,7 @@ int main(int /*argc*/, char** /*argv*/)
     Output("output.txt", &onegin_struct);
 
     RevSort(&onegin_struct);
+    Output("output.txt", &onegin_struct);
 
     BufferOutput("output.txt", onegin_struct.buffer, onegin_struct.buffer_size);
 
