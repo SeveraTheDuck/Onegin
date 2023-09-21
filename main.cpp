@@ -4,12 +4,10 @@
 int main(int /*argc*/, char** /*argv*/)
 {
     struct file_input onegin_struct = {.buffer = NULL, .buffer_size = 0,
-                                     .number_of_lines = 0,
-                                     .lines_array = NULL};
+                                       .number_of_lines = 0,
+                                       .lines_array = NULL};
 
-    FILE* fp = fopen("output.txt", "wb");
-    fclose(fp);
-    fp = NULL;
+    FileClean("output.txt");
 
     GetFileInput("onegin.txt", &onegin_struct, PARTED);
 

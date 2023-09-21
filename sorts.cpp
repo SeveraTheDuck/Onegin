@@ -1,34 +1,38 @@
 #include "headers/sorts.h"
-#include "../FileOpenLib/filestruct.h"
 
-void MySwap(line_struct* str1,
-            line_struct* str2)
+void MySwap(void* str1, void* str2, size_t element_size)
 {
     assert(str1);
     assert(str2);
 
-    line_struct temp_str = *str1;
-    *str1 = *str2;
-    *str2 = temp_str;
-    return;
+    char temp = 0;
+    for(size_t i = 0; i < element_size; i += sizeof(char))
+    {
+        temp = *((char*)str1 + i);
+        *((char*)str1 + i) = *((char*)str2 + i);
+        *((char*)str2 + i) = temp;
+    }
 }
 
-void BubbleSort(const file_input* buffer_info,
+void BubbleSort(void* data,
+                const size_t number_of_elements,
+                const size_t element_size,
                 int (*comparator) (const void* ptr1, const void* ptr2))
 {
-    assert(buffer_info);
+    assert(data);
 
     int cmp_status = 0;
-    for (size_t i = 0; i < buffer_info->number_of_lines; ++i)
+    for (size_t i = 0; i < number_of_elements; ++i)
     {
-        for (size_t j = 0; j < buffer_info->number_of_lines - i - 1; ++j)
+        for (size_t j = 0; j < number_of_elements - i - 1; ++j)
         {
-            cmp_status = comparator((const void*)&buffer_info->lines_array[j],
-                                    (const void*)&buffer_info->lines_array[j + 1]);
+            cmp_status = comparator((const void*)((char*)data +  j      * element_size),
+                                    (const void*)((char*)data + (j + 1) * element_size));
             if (cmp_status > 0)
             {
-                MySwap((line_struct*)&(buffer_info->lines_array[j]),
-                       (line_struct*)&(buffer_info->lines_array[j + 1]));
+                MySwap((void*)((char*)data +  j      * element_size),
+                       (void*)((char*)data + (j + 1) * element_size),
+                       element_size);
             }
         }
     }
@@ -115,7 +119,16 @@ void RevSort(file_input* buffer_info)
 {
     assert(buffer_info);
 
-    BubbleSort(buffer_info, RevCompare);
+    BubbleSort((void*)buffer_info->lines_array, buffer_info->number_of_lines,
+               sizeof(line_struct), RevCompare);
+}
+
+void FileClean(const char* file_name)
+{
+    FILE* fp = fopen(file_name, "wb");
+    assert(fp);
+    fclose(fp);
+    fp = NULL;
 }
 
 void Output(const char* file_name, file_input* buffer_info)
@@ -138,6 +151,8 @@ void Output(const char* file_name, file_input* buffer_info)
 
 void BufferOutput(const char* file_name, char* buffer, size_t buffer_size)
 {
+    assert(buffer);
+
     FILE* fp = fopen(file_name, "a");
     assert(fp);
 
